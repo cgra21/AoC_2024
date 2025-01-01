@@ -3,55 +3,58 @@ use advent_of_code::utils;
 use std::fs;
 use std::env;
 
-fn find_xmas(input: Vec<Vec<&str>>) -> i32 {
+fn count_xmas(grid: Vec<Vec<char>>) -> usize {
 
-    let match_word = "XMAS";
-    let directions: Vec<(isize, isize)> = utils::Vectors::all_directions();
+    let word = "XMAS".chars().collect::<Vec<char>>();
+    let directions = utils::Vectors::all_directions();
+    let rows = grid.len();
+    let cols = grid[0].len();
+    let mut count = 0;
 
-    let grid_width: usize = input[0].len();
-    let grid_height: usize = input.len();
+    let is_word_at = |x: usize, y: usize, dx: isize, dy: isize| -> bool {
+        for (i, &ch) in word.iter().enumerate() {
+            let nx = x as isize + i as isize * dx;
+            let ny = y as isize + i as isize * dy;
+            if nx < 0 || ny < 0 || nx >= rows as isize || ny >= cols as isize {
+                return false;
+            }
+            if grid[nx as usize][ny as usize] != ch {
+                return false;
+            }            
+        }
+        true
+    };
 
-    let mut matches = 0;
-
-    for row_idx in 0..grid_height {
-        for col_idx in 0..grid_width {
-            if input[row_idx][col_idx] == "X" {
-                for direction in directions {
-
-                    let chars_left = match_word.len() - 1;
-                    if !(0 <= (col_idx as isize + chars_left as isize  * direction.0)
-                        && (col_idx as isize  + chars_left as isize  * direction.0) < grid_width as isize ) {
-                        continue;
-                    }
-                    if !(0 <= (row_idx as isize  + chars_left as isize  * direction.1)
-                        && (row_idx as isize  + chars_left as isize  * direction.1) < grid_height as isize) {
-                        continue;
-                    }
-                    
-                    let mut found_word = true;
-
-                    for (steps, letter) in match_word[1..].chars().enumerate() {
-                        let new_row_idx = row_idx as isize + steps as isize *direction.1;
-                        let new_col_idx = row_idx as isize + steps as isize *direction.0;
-                        if input[new_row_idx][new_col_idx] != letter {
-                            found_word = false;
-                            break;
-                        }
-                    }
-                    
-                    if found_word {
-                        matches += 1;
-                    }
-
+    for x in 0..rows {
+        for y in 0..cols {
+            for &(dx, dy) in &directions {
+                if is_word_at(x, y, dx, dy) {
+                    count += 1;
                 }
             }
         }
     }
 
-    matches
+    count
 }
 
+fn parse_input(input: &str) -> Vec<Vec<char>> {
+    input
+        .lines() // Split the input into lines
+        .map(|line| line.trim())
+        .map(|line| line.chars().collect()) // Convert each line into a Vec<char>
+        .collect() // Collect all Vec<char> into a Vec<Vec<char>>
+}
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    
+    let file_path = &args[1];
 
+    let input = utils::read_input(file_path);
+
+    let grid = parse_input(&input);
+
+    let count = count_xmas(grid);
+    println!("The word 'XMAS' appears {} times.", count);
 }
