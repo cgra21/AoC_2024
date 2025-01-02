@@ -1,4 +1,5 @@
 use std::{collections::HashMap, env};
+use std::cmp::Ordering;
 
 use advent_of_code::utils;
 
@@ -62,6 +63,55 @@ fn find_correct_updates(updates: &str, mapping: &HashMap<String, Vec<String>>) -
     total
 }
 
+fn comparator(a: &str, b: &str, rules: &HashMap<String, Vec<String>>) -> Ordering {
+    if let Some(after_pages) = rules.get(a) {
+        if after_pages.contains(&b.to_string()) {
+            return Ordering::Less; // a must come before b
+        }
+    }
+
+    if let Some(after_pages) = rules.get(b) {
+        if after_pages.contains(&a.to_string()) {
+            return Ordering::Greater; // b must come before a
+        }
+    }
+
+    Ordering::Equal // No rule specifies precedence
+}
+
+fn part_2(updates: &str, mapping: &HashMap<String, Vec<String>>) -> usize {
+    let updates = updates.lines();
+
+    let mut total = 0;
+
+    for update in updates {
+        let mut seen_pages: Vec<&str> = Vec::new();
+        let mut pages: Vec<&str> = update.split(',').collect();
+
+        let mut valid = true;
+
+        for page in &pages {
+            if let Some(after_pages) = mapping.get(*page) {
+                if after_pages.iter().any(|p| seen_pages.contains(&p.as_str())) {
+                    valid = false;
+                    break;
+                } 
+            }
+            seen_pages.push(page);
+        }
+
+        if !valid {
+            pages.sort_by(|a, b| comparator(a, b, mapping));
+
+            let middle_index = pages.len() / 2;
+            let middle_page = pages[middle_index];
+            total += middle_page.parse::<usize>().expect("Invalid page number");
+
+        }
+    }
+    total
+}   
+
 fn main() {
 
     let args: Vec<String> = env::args().collect();
@@ -76,6 +126,10 @@ fn main() {
 
     let total = find_correct_updates(parts[1], &mapping);
 
-    println!("{total:?}");
+    let edit_total = part_2(parts[1], &mapping);
+
+    println!("Part 1: {total:?}");
+
+    println!("Part 2: {edit_total}");
 
 }
