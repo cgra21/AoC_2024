@@ -1,5 +1,3 @@
-use std::hash::Hash;
-use std::result;
 use std::{collections::HashSet, env};
 
 use advent_of_code::utils::{self, Point};
@@ -66,8 +64,6 @@ fn guard_patrol(grid: Vec<Vec<char>>) -> HashSet<Point> {
                 break;
             }
 
-        let symbol = grid[next_position.y as usize][next_position.x as usize];
-
         if walls.contains(&next_position) {
             direction = direction.turn_right();
         } else {
@@ -82,12 +78,10 @@ fn guard_patrol(grid: Vec<Vec<char>>) -> HashSet<Point> {
 
 fn part_2(grid: Vec<Vec<char>>, mut visited: HashSet<Point>) -> usize {
 
-    let mut loop_count = 0;
-
     let rows = grid.len();
     let cols = grid[0].len();
 
-    let mut position: Point = 
+    let position: Point = 
         grid.iter()
             .enumerate()
             .flat_map(|(i, row)| row.iter().enumerate().map(move |(j, &value)| (i, j, value)))
@@ -95,7 +89,7 @@ fn part_2(grid: Vec<Vec<char>>, mut visited: HashSet<Point>) -> usize {
             .map(|(row, col, _)| Point::new(col as isize, row as isize))
             .expect("Starting position not found"); // Extract only the position
 
-    let mut walls: HashSet<Point> = 
+    let walls: HashSet<Point> = 
         grid.iter()
             .enumerate()
             .flat_map(|(i, row)| {
