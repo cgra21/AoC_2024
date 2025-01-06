@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 regex.workspace = true   # Use the shared `regex` dependency
 utils.workspace = true   # Use the shared `utils` dependency
+itertools.workspace = true
 
 [[bin]]
 name = "day7_part1"       # Name of the first binary

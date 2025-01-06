@@ -13,4 +13,5 @@ default-members = ["days/day*"]
 
 [workspace.dependencies]
 regex = "1.11.1"
+itertools = "0.14.0"
 utils = { path = "./utils" }
