@@ -2,7 +2,7 @@ use regex::Regex;
 
 use std::env;
 
-use advent_of_code::utils;
+use utils::utils;
 
 fn extract_mul(string: &str) -> i32 {
     let regex = Regex::new(r"(?:mul\()(\d+,\d+)(?:\))").unwrap();

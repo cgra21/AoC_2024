@@ -1,0 +1,12 @@
+[package]
+name = "day3"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "day3"
+path = "src/day3.rs"
+
+[dependencies]
+regex.workspace = true   # Use the shared `regex` dependency
+utils.workspace = true   # Use the shared `utils` dependency

@@ -1,7 +1,7 @@
 use std::{collections::HashMap, env};
 use std::cmp::Ordering;
 
-use advent_of_code::utils;
+use utils::utils;
 
 fn parse_input(input: &str) -> Vec<&str>{
 

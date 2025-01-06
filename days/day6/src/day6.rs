@@ -1,7 +1,8 @@
 use std::{collections::HashSet, env};
 
-use advent_of_code::utils::{self, Point};
-use advent_of_code::utils::Direction;
+use utils::utils;
+use utils::Point;
+use utils::Direction;
 
 fn parse_input(input: &str) -> Vec<Vec<char>> {
     input

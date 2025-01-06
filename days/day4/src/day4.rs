@@ -1,4 +1,4 @@
-use advent_of_code::utils;
+use utils::utils;
 
 use std::env;
 

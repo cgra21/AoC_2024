@@ -1,7 +1,16 @@
-[package]
-name = "advent_of_code"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+resolver = "2"
 
-[dependencies]
+members = [ "days/day1",
+            "days/day2",
+            "days/day3",
+            "days/day4",
+            "days/day5",
+            "days/day6", "days/day7",
+            "utils"]
+default-members = ["days/day*"]
+
+
+[workspace.dependencies]
 regex = "1.11.1"
+utils = { path = "./utils" }
