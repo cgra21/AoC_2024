@@ -1,4 +1,13 @@
 use std::fs;
+use std::ops::{Add, Sub, Mul};
+
+pub fn parse_grid(input: &str) -> Vec<Vec<char>> {
+    input
+        .lines() // Split the input into lines
+        .map(|line| line.trim())
+        .map(|line| line.chars().collect()) // Convert each line into a Vec<char>
+        .collect() // Collect all Vec<char> into a Vec<Vec<char>>
+}
 
 pub fn read_input(file_path: &str) -> String {
     let input = fs::read_to_string(file_path)
@@ -7,7 +16,7 @@ pub fn read_input(file_path: &str) -> String {
     input
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Point {
     pub x: isize,
     pub y: isize,
@@ -23,6 +32,42 @@ impl Point {
         self.y = self.y + dy;
     }
 }
+
+impl Add for Point {
+    type Output = Point;
+
+    fn add(self, other: Point) -> Point {
+        Point {
+            x: self.x + other.x,
+            y: self.y + other.y
+        }
+    }
+}
+
+impl Sub for Point {
+    type Output = Point;
+
+    fn sub(self, other: Point) -> Point {
+        Point {
+            x: self.x - other.x,
+            y: self.y - other.y
+        }
+    }
+}
+
+impl Mul<isize> for Point {
+    type Output = Point;
+
+    fn mul(self, scalar: isize) -> Point {
+        Point {
+            x: self.x * scalar,
+            y: self.y * scalar,
+        }
+    }
+}
+
+
+
 pub struct Vectors;
 
 impl Vectors {
