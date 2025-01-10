@@ -1,0 +1,17 @@
+[package]
+name = "day9"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+regex.workspace = true   # Use the shared `regex` dependency
+utils.workspace = true   # Use the shared `utils` dependency
+itertools.workspace = true
+
+[[bin]]
+name = "day9_part1"       # Name of the first binary
+path = "src/part1.rs"      # Path to the file for part1
+
+[[bin]]
+name = "day9_part2"       # Name of the second binary
+path = "src/part2.rs"      # Path to the file for part2
